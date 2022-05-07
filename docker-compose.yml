@@ -2,13 +2,17 @@ version: '3'
 
 services:
   nginx:
-      image: nginx:1.13
+      image: nginx:latest
       ports:
-        - "8000:8000"
+        - "80:80"
+        - "443:443"
+      restart: always
       volumes:
-        - ./nginx/conf:/etc/nginx/conf.d
-        - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
-        - ./static:/static
+         - ./nginx/conf:/etc/nginx/conf.d:ro
+         - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params:ro
+         - ./static:/static:ro
+         - ./certbot/www:/var/www/certbot/:ro
+         - ./certbot/conf/:/etc/nginx/ssl/:ro
       depends_on:
         - python
 
@@ -36,5 +40,10 @@ services:
       depends_on:
         - db
 
+  certbot:
+      image: certbot/certbot:latest
+      volumes:
+        - ./certbot/www/:/var/www/certbot/:rw
+        - ./certbot/conf/:/etc/letsencrypt/:rw
 volumes:
   db-store:
