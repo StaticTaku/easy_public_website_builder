@@ -99,8 +99,8 @@ docker compose run --rm  certbot certonly --webroot --webroot-path /var/www/cert
 in nginx/conf/app_nginx.conf, add this
 ```sh
 server {
-    listen 443 default_server ssl http2;
-    listen [::]:443 ssl http2;
+    listen {docker side https port number you want to use} default_server ssl http2;
+    listen [::]:{docker side https port number you want to use} ssl http2;
 
     ssl_certificate /etc/nginx/ssl/live/{domain you want to use}/fullchain.pem;
     ssl_certificate_key /etc/nginx/ssl/live/{domain you want to use}/privkey.pem;
@@ -123,7 +123,7 @@ and
 ```sh
 docker-compose restart
 ```
-you can now accese your site by https
+you can now accese your site by https://{domain you want to use} and https:/{domain you want to use}/admin
 
 ### 12.
 certificates for https expire every three months, so update your certificates every month
