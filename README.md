@@ -39,7 +39,8 @@ If you dont have it, just input your server's ip address at server_name
 
 ### 4.
 ```sh
-docker-compose run python django-admin.py startproject app .
+docker-compose run python django-admin.py startproject app . && \
+sudo chowm $USER:$USER src/ static/
 ```
 
 ### 5.
