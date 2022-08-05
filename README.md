@@ -125,16 +125,3 @@ and
 docker-compose restart
 ```
 you can now accese your site by https://{domain you want to use} and https:/{domain you want to use}/admin
-
-### 12.
-certificates for https expire every three months, so update your certificates every month
-
-open editor for crontab
-```sh
-crontab -e
-```
-
-input crontab command
-```sh
-0 0 1 * * docker-compose run --rm certbot renew
-```
