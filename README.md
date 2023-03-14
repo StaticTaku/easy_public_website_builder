@@ -1,10 +1,18 @@
 # easy_public_website_builder
 
-## How To Use
+## Installation
+```sh
+git clone https://github.com/StaticTaku/easy_public_website_builder.git
+```
+
+## Setup 
 
 ### 1.
-Set environment variable for mysql in mysql_enviroonment.env
-dont change variable name, just change values of variables
+Set environment variables for mysql in mysql_enviroonment.env, which will be set as environment variables in the db and python server (see docker-compose.yml if you are not sure what those servers are).
+
+Dont change variable names, just change values. 
+
+For some security reasons, it is better to erase what you wrote in this file after all of the setups.
 ```sh
 MYSQL_ROOT_PASSWORD=
 MYSQL_DATABASE=
@@ -13,7 +21,7 @@ MYSQL_PASSWORD=
 ```
 
 ### 2.
-If you want to change public port of nginx, just change like this:
+If you want to change the public ports of nginx, just change like this:
 
 in docker-compose.yml
 ```sh
@@ -29,13 +37,13 @@ server {
         listes [::] {docker side http port number you want to use};
 ```
 ### 3.
-If you have domain for your server, change server name in nginx/conf/app_nginx.conf like this:
+If you have domain, change the server name in nginx/conf/app_nginx.conf like this:
 ```sh
 server {
         server_name {domain you want to use};
 ```
 
-If you dont have it, just input your server's ip address at server_name
+If you dont have it, just input your server's ip address at the server_name.
 
 ### 4.
 ```sh
@@ -87,17 +95,17 @@ and in src/app/settings.py, change ALLOWED_HOSTS
 ```sh
 ALLOWED_HOSTS = ["{domain you want to use}"]
 ```
-and, you can access your web site by http://{domain you want to use} and http:/{domain you want to use}/admin
+and, you can access your web site by http://{domain you want to use} and http:/{domain you want to use}/admin.
 
-
-### 10.
+## Activate https
+### 1.
 To activate https,
 ```sh
 docker compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d {domain you want to use}
 ```
 
-### 11.
-in nginx/conf/app_nginx.conf, add this
+### 2.
+in nginx/conf/app_nginx.conf, add this:
 ```sh
 server {
     listen {docker side https port number you want to use} default_server ssl http2;
@@ -124,4 +132,30 @@ and
 ```sh
 docker-compose restart
 ```
-you can now accese your site by https://{domain you want to use} and https:/{domain you want to use}/admin
+You can now accese your site by https://{domain you want to use} and https:/{domain you want to use}/admin.
+
+
+## Frequently used commands
+```sh
+#start <command> in <service name> container
+docker-compose exec -it <service name> <command>
+#ex.
+docker-compose exec -it python bash
+
+#list all containers in compose project
+docker-compose ps -a
+
+#start container
+#ex.
+docker-compose start db
+
+#stop container
+#ex.
+docker-compose start python
+
+#make image
+docker-compose build
+
+#create container from image
+docker-compose create
+```
